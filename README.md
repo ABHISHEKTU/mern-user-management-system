@@ -13,10 +13,10 @@ A full-stack **MERN** application for secure user registration, authentication a
 
 > Fill these in after deployment, or delete this section if you are not hosting the project.
 
-| | Link |
+| Link | URL |
 | --- | --- |
-| [**Application**](https://mern-user-management-system-plum.vercel.app/login) |
-| [**API health check**](https://mern-user-management-system-3w89.onrender.com/api/health) |
+| **Application** | [Open the app](https://mern-user-management-system-plum.vercel.app/login) |
+| **API health check** | [Check API status](https://mern-user-management-system-3w89.onrender.com/api/health) |
 
 **Demo account (standard user):** `frank@example.com` / `Test1234`
 
