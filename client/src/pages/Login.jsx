@@ -2,6 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/useAuth.js";
 import { getErrorMessage } from "../api/axios.js";
+import AuthLayout from "../components/AuthLayout.jsx";
+import Alert from "../components/ui/Alert.jsx";
+import Button from "../components/ui/Button.jsx";
+import Input from "../components/ui/Input.jsx";
+import PasswordInput from "../components/ui/PasswordInput.jsx";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -40,27 +45,43 @@ export default function Login() {
   };
 
   return (
-    <div className="card">
-      <h1>Login</h1>
-      {serverError && <div className="alert">{serverError}</div>}
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="field">
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" value={form.email} onChange={handleChange} />
-          {errors.email && <span className="error">{errors.email}</span>}
-        </div>
-        <div className="field">
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" value={form.password} onChange={handleChange} />
-          {errors.password && <span className="error">{errors.password}</span>}
-        </div>
-        <button type="submit" disabled={submitting}>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to your account to continue."
+      footer={
+        <>
+          No account?{" "}
+          <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-700">
+            Sign up
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        {serverError && <Alert type="error">{serverError}</Alert>}
+        <Input
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          value={form.email}
+          onChange={handleChange}
+          error={errors.email}
+        />
+        <PasswordInput
+          label="Password"
+          name="password"
+          autoComplete="current-password"
+          placeholder="Your password"
+          value={form.password}
+          onChange={handleChange}
+          error={errors.password}
+        />
+        <Button type="submit" loading={submitting} className="w-full">
           {submitting ? "Logging in..." : "Login"}
-        </button>
+        </Button>
       </form>
-      <p>
-        No account? <Link to="/signup">Sign up</Link>
-      </p>
-    </div>
+    </AuthLayout>
   );
 }
