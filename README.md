@@ -15,10 +15,10 @@ A full-stack **MERN** application for secure user registration, authentication a
 
 | | Link |
 | --- | --- |
-| **Application** | `https://your-app.vercel.app` |
-| **API health check** | `https://your-api.onrender.com/api/health` |
+| [**Application**](https://mern-user-management-system-plum.vercel.app/login) |
+| [**API health check**](https://mern-user-management-system-3w89.onrender.com/api/health) |
 
-**Demo account (standard user):** `demo@example.com` / `Demo1234`
+**Demo account (standard user):** `frank@example.com` / `Test1234`
 
 The free-tier API may take about 30 seconds to wake up on the first request.
 
