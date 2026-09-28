@@ -6,6 +6,7 @@ import Alert from "../components/ui/Alert.jsx";
 import Badge from "../components/ui/Badge.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
+import { useToast } from "../context/useToast.js";
 import ConfirmModal from "../components/ui/ConfirmModal.jsx";
 
 const formatDate = (value) =>
@@ -41,6 +42,7 @@ function StatCard({ icon: Icon, label, value }) {
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
+  const toast = useToast();
   const isAdmin = user.role === "admin";
 
   const [users, setUsers] = useState([]);
@@ -80,7 +82,7 @@ export default function Dashboard() {
       await api.delete(`/users/${target.id}`);
       setToDelete(null);
       if (target.id === user.id) logout();
-      else setUsers((prev) => prev.filter((u) => u.id !== target.id));
+      else { setUsers((prev) => prev.filter((u) => u.id !== target.id)); toast("User deleted"); }
     } catch (err) {
       setToDelete(null);
       setError(getErrorMessage(err));
@@ -217,3 +219,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

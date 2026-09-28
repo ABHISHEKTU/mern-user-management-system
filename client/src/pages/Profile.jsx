@@ -1,19 +1,33 @@
 import { useState } from "react";
 import api, { getErrorMessage } from "../api/axios.js";
 import { useAuth } from "../context/useAuth.js";
+import { useToast } from "../context/useToast.js";
+import Alert from "../components/ui/Alert.jsx";
+import Badge from "../components/ui/Badge.jsx";
+import Button from "../components/ui/Button.jsx";
+import Card from "../components/ui/Card.jsx";
+import Input from "../components/ui/Input.jsx";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const initials = (name) =>
+  name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+
 export default function Profile() {
   const { user, setUser } = useAuth();
+  const toast = useToast();
   const [form, setForm] = useState({ name: user.name, email: user.email });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
-  const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
-    setSuccess("");
+    setServerError("");
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -27,7 +41,6 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
-    setSuccess("");
 
     const found = validate();
     setErrors(found);
@@ -47,7 +60,7 @@ export default function Profile() {
       const { data } = await api.put("/users/profile", payload);
       setUser(data.user);
       setForm({ name: data.user.name, email: data.user.email });
-      setSuccess("Profile updated");
+      toast("Profile updated");
     } catch (err) {
       setServerError(getErrorMessage(err));
     } finally {
@@ -56,25 +69,51 @@ export default function Profile() {
   };
 
   return (
-    <div className="card">
-      <h1>My profile</h1>
-      {serverError && <div className="alert">{serverError}</div>}
-      {success && <div className="success">{success}</div>}
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="field">
-          <label htmlFor="name">Name</label>
-          <input id="name" name="name" value={form.name} onChange={handleChange} />
-          {errors.name && <span className="error">{errors.name}</span>}
+    <div className="mx-auto max-w-xl space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">My profile</h1>
+        <p className="mt-1 text-sm text-slate-600">Update your name and email.</p>
+      </div>
+
+      <Card>
+        <div className="mb-6 flex items-center gap-4 border-b border-slate-100 pb-6">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-100 text-lg font-semibold text-indigo-700">
+            {initials(user.name)}
+          </div>
+          <div>
+            <p className="font-semibold">{user.name}</p>
+            <div className="mt-1">
+              <Badge variant={user.role}>{user.role}</Badge>
+            </div>
+          </div>
         </div>
-        <div className="field">
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" value={form.email} onChange={handleChange} />
-          {errors.email && <span className="error">{errors.email}</span>}
-        </div>
-        <button type="submit" disabled={submitting}>
-          {submitting ? "Saving..." : "Save changes"}
-        </button>
-      </form>
+
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
+          {serverError && <Alert type="error">{serverError}</Alert>}
+          <Input
+            label="Name"
+            name="name"
+            autoComplete="name"
+            value={form.name}
+            onChange={handleChange}
+            error={errors.name}
+          />
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={form.email}
+            onChange={handleChange}
+            error={errors.email}
+          />
+          <div className="flex justify-end">
+            <Button type="submit" loading={submitting}>
+              {submitting ? "Saving..." : "Save changes"}
+            </Button>
+          </div>
+        </form>
+      </Card>
     </div>
   );
 }
