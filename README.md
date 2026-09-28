@@ -61,3 +61,20 @@ Signup always creates role `user`. To make an admin, change `role` to `admin` on
 - helmet, CORS limited to CLIENT_URL, rate limiting, 10kb body limit.
 - JWT expires after 1 day. Role is read from the database on every request.
 - JWT is stored in localStorage (allowed by the task). An httpOnly cookie is safer against XSS.
+
+## Screenshots
+
+### Login
+![Login](docs/screenshots/login.png)
+
+### Signup
+![Signup](docs/screenshots/signup.png)
+
+### Admin dashboard
+![Admin dashboard](docs/screenshots/dashboard-admin.png)
+
+### User dashboard
+![User dashboard](docs/screenshots/dashboard-user.png)
+
+### Profile
+![Profile](docs/screenshots/profile.png)
