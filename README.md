@@ -11,7 +11,6 @@ A full-stack **MERN** application for secure user registration, authentication a
 
 ## Live Demo
 
-> Fill these in after deployment, or delete this section if you are not hosting the project.
 
 | Link | URL |
 | --- | --- |
